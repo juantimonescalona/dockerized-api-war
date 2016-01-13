@@ -12,7 +12,7 @@ utilizes the following technologies
 * Spring DI with annotation+programmatic configuration
 
 ## Prerequisites
-1. Maven3 is required is build the application. It cannot be built with Maven2!
+1. Maven3 is required to build the application. It does not work with Maven2!
 1. Java 1.8+
 
 ## Key concepts

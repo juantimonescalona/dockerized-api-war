@@ -43,7 +43,7 @@ mvn3 -Dem.baseDirectory=c:\cst\em\product jetty:run
 ```
 Open [http://localhost:8090/emmanage/api/v1](http://localhost:8090/emmanage/api/v1) to see swagger documentation
 
-![Swagger UI](/sranka/emmanage-api-war/blob/master/swagger-ui.png?raw=true)
+![Swagger UI](swagger-ui.png)
 
 Create war file suitable for app server deployment
 ```

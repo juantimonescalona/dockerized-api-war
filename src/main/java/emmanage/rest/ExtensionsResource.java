@@ -45,7 +45,7 @@ public class ExtensionsResource {
     
     @GET
     @Path("/{id:.*\\.jar}")
-    @ApiOperation(value="Gets metadata about a particular extension")
+    @ApiOperation(value="Gets metadata about an extension")
     @ApiResponses( value={
     		@ApiResponse(code=200, message = "success", response=ExtensionInfo.class),
     		@ApiResponse(code=404, message = "cannot read extension file")})
@@ -56,7 +56,7 @@ public class ExtensionsResource {
     @GET
     @Path("/{id:.*\\.jar}/data")
     @Produces({MediaType.APPLICATION_OCTET_STREAM})
-    @ApiOperation(value="Gets a particular log file contents")
+    @ApiOperation(value="Gets extension file")
     @ApiResponses( value={
     		@ApiResponse(code=200, message = "success"),
     		@ApiResponse(code=404, message = "cannot read log file")})

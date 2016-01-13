@@ -35,7 +35,7 @@ public class LogsResource {
     UriInfo uriInfo;
 	
     @GET
-    @ApiOperation(value="Gets available extension files")
+    @ApiOperation(value="Gets available log files")
     public List<LogInfo> getLogs() throws IOException {
     	List<File> files = logService.getFiles();
     	List<LogInfo> retVal = files.stream().map((x) -> new LogInfo(x,uriInfo)).collect(Collectors.toList());
@@ -44,7 +44,7 @@ public class LogsResource {
     
     @GET
     @Path("/{id:.*\\.log}")
-    @ApiOperation(value="Gets metadata about a particular log file")
+    @ApiOperation(value="Gets metadata about a log file")
     @ApiResponses( value={
     		@ApiResponse(code=200, message = "success", response=LogInfo.class),
     		@ApiResponse(code=404, message = "cannot read log file")})
@@ -55,7 +55,7 @@ public class LogsResource {
     @GET
     @Path("/{id:.*\\.log}/data")
     @Produces({MediaType.TEXT_PLAIN})
-    @ApiOperation(value="Gets a particular log file contents")
+    @ApiOperation(value="Gets log file contents")
     @ApiResponses( value={
     		@ApiResponse(code=200, message = "success"),
     		@ApiResponse(code=404, message = "cannot read log file")})

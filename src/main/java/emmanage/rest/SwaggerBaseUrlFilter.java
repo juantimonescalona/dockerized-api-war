@@ -18,7 +18,7 @@ import io.swagger.models.Scheme;
 import io.swagger.models.Swagger;
 
 /**
- * Changes returned swagger to have a correct API base URL.
+ * Changes returned swagger to point to local APIs URL. 
  */
 @Provider
 public class SwaggerBaseUrlFilter implements ContainerResponseFilter{

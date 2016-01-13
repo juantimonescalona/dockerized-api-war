@@ -4,6 +4,10 @@ import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 
+/**
+ * Marker file for swagger generation.
+ * @author zavora
+ */
 @SwaggerDefinition(
         info = @Info(
                 description = "Management of EM application",

@@ -3,8 +3,7 @@ Java web module with REST services built using Jersey/Jackson/Swagger/Spring
 
 ## Overview
 
-A boilerplate of a Java web application module for building REST apis. It 
-utilizes the following technologies
+A Java web application module boilerplate that provides REST APIs using the following technologies:
 
 * Jersey JAX-RS
 * Jackson serialization

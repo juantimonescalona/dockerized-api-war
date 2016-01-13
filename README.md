@@ -12,7 +12,7 @@ utilizes the following technologies
 * Spring DI with annotation+programmatic configuration
 
 ## Prerequisites
-1. Maven3 is required is build the application. It cannot be built with Maven2!
+1. Maven3 is required to build the application. It does not work with Maven2!
 1. Java 1.8+
 
 ## Key concepts
@@ -41,9 +41,9 @@ Start web application
 ```
 mvn3 -Dem.baseDirectory=c:\cst\em\product jetty:run
 ```
-Open [http://localhost:8090/emmanage/api/v1](http://localhost:8090/emmanage/api/v1) to see swagger documentation
+Open [http://localhost:8090/emmanage/api](http://localhost:8090/emmanage/api) to see swagger documentation
 
-![Swagger UI](https://raw.github.com/sranka/em-manage-war/master/swagger-ui.png)
+![Swagger UI](swagger-ui.png)
 
 Create war file suitable for app server deployment
 ```

@@ -41,7 +41,7 @@ Start web application
 ```
 mvn3 -Dem.baseDirectory=c:\cst\em\product jetty:run
 ```
-Open [http://localhost:8090/emmanage/api/v1](http://localhost:8090/emmanage/api/v1) to see swagger documentation
+Open [http://localhost:8090/emmanage/api](http://localhost:8090/emmanage/api) to see swagger documentation
 
 ![Swagger UI](swagger-ui.png)
 

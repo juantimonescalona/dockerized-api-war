@@ -8,9 +8,8 @@ utilizes the following technologies
 
 * Jersey JAX-RS
 * Jackson serialization
-* Swagger annotation, and automatically generated and Swagger UI of the REST APIs
-* Spring for DI with Prgramatic Configuration
-
+* Swagger annotation, Swagger UI
+* Spring DI with annotation+programmatic configuration
 
 ## Prerequisites
 Maven3 is required is build the application. It cannot be built with Maven2!

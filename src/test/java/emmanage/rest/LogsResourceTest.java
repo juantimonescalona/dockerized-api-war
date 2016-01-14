@@ -8,7 +8,7 @@ import static com.jayway.restassured.RestAssured.*;
 //import static org.hamcrest.Matchers.*;
 
 public class LogsResourceTest extends RestTestBase{
-	// TODO implement tests properly as an example
+	// TODO implement tests properly to provide full example
 
 	@Test
     public void listFiles(){

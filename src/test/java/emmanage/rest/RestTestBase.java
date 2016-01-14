@@ -26,7 +26,7 @@ import emmanage.config.SpringConfig;
  */
 @RunWith(org.springframework.test.context.junit4.SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringConfig.class)
-@ActiveProfiles("test")
+@ActiveProfiles("test") // required for proper test setup of base directories
 public class RestTestBase implements ApplicationContextAware{
 	private JerseyTest jerseyTest;
 

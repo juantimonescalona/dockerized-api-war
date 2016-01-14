@@ -32,5 +32,4 @@ public class JerseyInitializer extends ResourceConfig {
         // resource/SwaggerDefinitionProvider initializes Swagger root meta data
         // resource/SwaggerBaseUrlFilter initializes swagger schemes, host and basePath
     }
-	
 }

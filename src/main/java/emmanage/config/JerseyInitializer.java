@@ -23,7 +23,9 @@ public class JerseyInitializer extends ResourceConfig {
 		// register swagger resource, serializer
 		register(io.swagger.jaxrs.listing.ApiListingResource.class);
         register(io.swagger.jaxrs.listing.SwaggerSerializers.class);
-		
+        // register global exception mappers
+        register(GlobalExceptionMappers.FileNotFoundExceptionMapper.class);
+        
         // initialize swagger
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setResourcePackage(String.join(",", restResources));

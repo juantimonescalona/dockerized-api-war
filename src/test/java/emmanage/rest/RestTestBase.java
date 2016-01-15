@@ -16,11 +16,15 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
+import com.jayway.restassured.RestAssured;
+
 import emmanage.config.JerseyInitializer;
 import emmanage.config.SpringConfig;
 
 /**
- * Base class for REST interface testing.
+ * Base class for REST interface testing start an embedded server with REST APIs and 
+ * contains methods that let you easily test REST interface using JAX-RS client API or
+ * RestAssured. 
  * 
  * @author zavora
  */
@@ -33,6 +37,8 @@ public class RestTestBase implements ApplicationContextAware{
     @Before
     public void setUp() throws Exception {
     	jerseyTest.setUp();
+        // initializes REST assured, so that tested URL can be relative
+    	RestAssured.baseURI = uri(null).toString();
     }
     @After
     public void tearDown() throws Exception {
@@ -59,6 +65,16 @@ public class RestTestBase implements ApplicationContextAware{
     public URI uri(String path){
   		return target(path).getUri();
     }
+    
+    /**
+     * The same as {@link #uri(String) uri(String)}, but return string.
+     * 
+     * @param path path in the application or <code>null</code> to return root application path 
+     * @return string
+     */
+    public String uriString(String path){
+    	return uri(path).toString();
+    };
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

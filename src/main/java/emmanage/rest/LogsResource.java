@@ -48,7 +48,7 @@ public class LogsResource {
     @ApiOperation(value="Gets available log files")
     public List<LogInfo> getLogs() throws IOException {
     	List<File> files = logService.getFiles();
-    	List<LogInfo> retVal = files.stream().map((x) -> new LogInfo(x,uriInfo)).collect(Collectors.toList());
+    	List<LogInfo> retVal = files.stream().map((x) -> new LogInfo(x,uriInfo,true)).collect(Collectors.toList());
 		return retVal;
     }
     
@@ -59,7 +59,7 @@ public class LogsResource {
     		@ApiResponse(code=200, message = "success", response=LogInfo.class),
     		@ApiResponse(code=404, message = "cannot read log file")})
     public LogInfo getLogInfo(@PathParam("id") @ApiParam("log id") String id) throws IOException{
-    	return new LogInfo(logService.getFile(id), uriInfo);
+    	return new LogInfo(logService.getFile(id), uriInfo, false);
     }
     
     @GET

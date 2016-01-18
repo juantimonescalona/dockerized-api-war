@@ -84,7 +84,7 @@ public class LogsResourceTest extends RestTestBase{
 	    		body("",hasSize(1)).
 	    		body("id",hasItem("log-listFiles1.log")).
 	    		body("id",not(hasItem("log-listFiles2.nolog"))).
-	    		body("find { it.id == 'log-listFiles1.log' }.href", endsWith("/log-listFiles1.log")).
+	    		body("find { it.id == 'log-listFiles1.log' }.href", endsWith("logs/log-listFiles1.log")).
 	    		and(); // tail only
 		} finally{
 			// delete files
@@ -105,7 +105,7 @@ public class LogsResourceTest extends RestTestBase{
 	    		statusCode(200).
 	    		contentType(ContentType.JSON).
 	    		body("id",equalTo(fileName)).
-	    		body("href", endsWith("/"+fileName)).
+	    		body("href", endsWith("logs/"+fileName)).
 	    		body("size", equalTo(getFileContent(fileName).length())).
 	    		and(); // tail only
 

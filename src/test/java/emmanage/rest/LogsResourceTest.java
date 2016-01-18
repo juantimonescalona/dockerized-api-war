@@ -4,19 +4,23 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jayway.restassured.http.ContentType;
+import com.jayway.restassured.response.Header;
 
 import emmanage.config.AppDirectories;
 
 // rest assured testing
 import static com.jayway.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LogsResourceTest extends RestTestBase{
 	@Autowired
@@ -32,7 +36,9 @@ public class LogsResourceTest extends RestTestBase{
 						throw new RuntimeException(e);
 					}
 				});
+		;
 		// create requested files with lines containing just the contents
+		
 		return Arrays.asList(logFile)
 				.stream()
 				.map(
@@ -40,13 +46,26 @@ public class LogsResourceTest extends RestTestBase{
 						try{
 							return Files.write(
 								appDirs.getLogDirectory().resolve(x),
-								Arrays.asList(x,x,x,x)
+								getFileContent(x).getBytes(StandardCharsets.UTF_8) 
 							);
 						}catch(Exception e){
 							throw new RuntimeException(e);
 						}
 					})
 				.collect(Collectors.toList());
+	}
+
+	private String getFileContent(String fileName){
+		int iterations = 1000;
+		//iterations-times of fileName ;
+		return Stream
+				.iterate(fileName, (y) -> y)
+				.limit(1000)
+				.collect(
+						() -> new StringBuilder(iterations*fileName.length()), 
+						StringBuilder::append, 
+						StringBuilder::append)
+				.toString(); 
 	}
 	
 	@Test
@@ -87,6 +106,7 @@ public class LogsResourceTest extends RestTestBase{
 	    		contentType(ContentType.JSON).
 	    		body("id",equalTo(fileName)).
 	    		body("href", endsWith("/"+fileName)).
+	    		body("size", equalTo(getFileContent(fileName).length())).
 	    		and(); // tail only
 
 			// test invalid log metadata
@@ -122,6 +142,7 @@ public class LogsResourceTest extends RestTestBase{
 	    	then().
 	    		statusCode(200).
 	    		contentType(ContentType.TEXT).
+	    		header("Content-Disposition", equalTo("attachment; filename=\""+fileName+"\"")).
 	    		body(containsString(fileName));
 
 			// test invalid log metadata
@@ -137,4 +158,84 @@ public class LogsResourceTest extends RestTestBase{
 		}
 	}
 
+	@Test
+    public void logDataPartialContent() throws IOException{
+    	String fileName = "logDataPartialContent.log";
+    	String fileContents = getFileContent(fileName);
+    	
+    	setupLogDirectory(fileName);
+		try{
+	    	// return the file from the end (in a buffer size)
+			String path = "/logs/"+fileName+"/data?offset=-3";
+			given().
+	    		accept(ContentType.TEXT).
+	    	when().
+	    		get(path).
+	    	then().
+	    		statusCode(200).
+	    		contentType(ContentType.TEXT).
+	    		header("Content-Disposition", isEmptyOrNullString()).
+	    		body(equalTo(fileContents.substring(fileContents.length()-3)));
+			// validate Link headers
+			List<Header> listHeaders = get(path).headers().getList("Link");		
+    		assertThat(listHeaders, hasSize(2));
+    		assertThat(listHeaders.get(0).getValue(),containsString("data?offset="+(fileContents.length()-3)+">; rel=\"current\""));
+    		assertThat(listHeaders.get(1).getValue(),containsString("data?offset="+fileContents.length()+">; rel=\"next\""));
+
+	    	// return the file from the end (with a bigger than a buffer size)
+			path = "/logs/"+fileName+"/data?offset=-5000";
+			given().
+	    		accept(ContentType.TEXT).
+	    	when().
+	    		get(path).
+	    	then().
+	    		statusCode(200).
+	    		contentType(ContentType.TEXT).
+	    		header("Content-Disposition", isEmptyOrNullString()).
+	    		body(equalTo(fileContents.substring(fileContents.length()-5000)));
+			// validate Link headers
+			listHeaders = get(path).headers().getList("Link");		
+    		assertThat(listHeaders, hasSize(2));
+    		assertThat(listHeaders.get(0).getValue(),containsString("data?offset="+(fileContents.length()-5000)+">; rel=\"current\""));
+    		assertThat(listHeaders.get(1).getValue(),containsString("data?offset="+fileContents.length()+">; rel=\"next\""));
+
+	    	// return the file from the beginning, since offset is greater that actual value
+			path = "/logs/"+fileName+"/data?offset="+(fileContents.length()+1);
+			given().
+	    		accept(ContentType.TEXT).
+	    	when().
+	    		get(path).
+	    	then().
+	    		statusCode(200).
+	    		contentType(ContentType.TEXT).
+	    		body(equalTo(fileContents));
+		} finally{
+			// delete files
+			setupLogDirectory();
+		}
+	}
+	@Test
+    public void logDataNoContent() throws IOException{
+    	String fileName = "logDataNoContent.log";
+		String fileContent = getFileContent(fileName);
+    	setupLogDirectory(fileName);
+		try{
+			String path = "/logs/"+fileName+"/data?offset="+fileContent.length();
+			// poll from the end of file
+	    	when().
+	    		get(path).
+	    	then().
+	    		statusCode(204).
+	    		header("Content-Disposition", isEmptyOrNullString()).
+	    		body(isEmptyOrNullString());
+			// validate Link headers
+			List<Header> listHeaders = get(path).headers().getList("Link");		
+    		assertThat(listHeaders, hasSize(2));
+    		assertThat(listHeaders.get(0).getValue(),containsString("data?offset="+fileContent.length()+">; rel=\"current\""));
+    		assertThat(listHeaders.get(1).getValue(),containsString("data?offset="+fileContent.length()+">; rel=\"next\""));
+		} finally{
+			// delete files
+			setupLogDirectory();
+		}
+	}
 }

@@ -9,6 +9,8 @@ import javax.ws.rs.core.UriInfo;
  * @author zavora
  */
 public class LogInfo extends ResourceSupport{
+	public long size;
+	
 	/** 
 	 * Sole constructor used by serializers.
 	 */
@@ -21,6 +23,7 @@ public class LogInfo extends ResourceSupport{
 	 */
 	public LogInfo(File file, UriInfo uriInfo){
 		setId(file.getName());
+		size = file.length();
 		setHref(uriInfo.getAbsolutePathBuilder().path(file.getName()).build());
 	}
 }

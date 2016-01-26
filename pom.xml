@@ -168,7 +168,24 @@
                     <archive>
                         <addMavenDescriptor>false</addMavenDescriptor>
                     </archive>
+                    <warName>em-manage</warName>
                 </configuration>
+            </plugin>
+            <plugin>
+              <groupId>com.spotify</groupId>
+              <artifactId>docker-maven-plugin</artifactId>
+              <version>0.3.258</version>
+              <configuration>
+                <imageName>em-manage</imageName>
+                <dockerDirectory>docker</dockerDirectory>
+                  <resources>
+                     <resource>
+                       <targetPath>/</targetPath>
+                       <directory>${project.build.directory}</directory>
+                       <include>em-manage.war</include>
+                     </resource>
+                  </resources>
+              </configuration>
             </plugin>
         </plugins>
     </build>

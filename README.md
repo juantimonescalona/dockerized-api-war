@@ -58,7 +58,7 @@ If you are behind a proxy and would like play with a local docker-machine, creat
 docker-machine create -d virtualbox --engine-env HTTP_PROXY=http://PROXY:8080 -engine-env PROXY=http://web-proxy.bbn.hpecorp.net:8080 --engine-env NO_PROXY=localhost,192.168.99.100 behind-proxy
 ```
 
-And then setup your docker client using: 
+And then setup your docker client using instruction that are printed on running: 
 
 ```
 docker-machine env behind-proxy

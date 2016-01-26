@@ -49,3 +49,51 @@ Create war file suitable for app server deployment
 mvn3 clean package
 ```
 see `target/*.war`
+
+## Docker support
+### Setting up docker-machine to work well when behind proxy
+If you are behind a proxy and would like play with a local docker-machine, create a new docker machine that will route all the traffic to a docker hub via the PROXY.
+
+```
+docker-machine create -d virtualbox --engine-env HTTP_PROXY=http://PROXY:8080 -engine-env PROXY=http://web-proxy.bbn.hpecorp.net:8080 --engine-env NO_PROXY=localhost,192.168.99.100 behind-proxy
+```
+
+And then setup your docker client using: 
+
+```
+docker-machine env behind-proxy
+```
+ 
+### Build docker image using maven
+You can build a docker image named _em-manage_ using the https://github.com/spotify/docker-maven-plugin :
+
+```
+mvn3 clean package docker:build 
+```
+
+### Run a new docker container
+To run a docker container to be accessible on port 8090 run:
+
+```
+docker stop em-manage
+docker rm -f em-manage
+docker run -d -p 8090:8080 --name em-manage em-manage 
+```
+
+Open your web browser at http://192.168.99.100:8090 , assuming that _192.168.99.100 is your docker host (`docker-machine ip behind-proxy`)
+
+### Run a simple cluster
+A simple cluster can be set using _docker-compose_ from the root directory of this project. If you are behind a proxy, set an environment variable _NO___PROXY_ to point to the docker host:
+
+```
+set NO_PROXY=192.168.99.100
+```
+
+Scale your application to 2 web nodes accessible through a proxy:
+
+```
+docker-compose stop
+docker-compose scale web=2 proxy=1
+```
+
+Open your web browser at http://192.168.99.100 , assuming that _192.168.99.100 is your docker host (`docker-machine ip behind-proxy`)

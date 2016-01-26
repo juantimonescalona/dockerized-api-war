@@ -1,0 +1,17 @@
+# example of using built image
+# example of a simple cluster
+# start with: docker-compose scale web=2 proxy=1
+web:
+  image: em-manage
+
+proxy:
+  image: eeacms/haproxy
+  privileged: true
+  links:
+  - web
+  ports:
+  - "80:5000"
+  - "1936:1936"
+  environment:
+  - BACKENDS_PORT=8080
+  - SERVICE_NAMES=web

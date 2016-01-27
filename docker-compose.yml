@@ -6,7 +6,6 @@ web:
 
 proxy:
   image: eeacms/haproxy
-  privileged: true
   links:
   - web
   ports:

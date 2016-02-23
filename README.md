@@ -83,7 +83,7 @@ docker run -d -p 8090:8080 --name em-manage em-manage
 Open your web browser at http://192.168.99.100:8090 , assuming that _192.168.99.100_ is your docker host (`docker-machine ip behind-proxy`)
 
 ### Run a simple cluster
-A simple cluster can be set using _docker-compose_ from the root directory of this project. If you are behind a proxy, set an environment variable _NO___PROXY_ to point to the docker host:
+A simple cluster can be set using _docker-compose_ from the root directory of this project. If you are behind a proxy, set an environment variable _NO_PROXY_ to point to the docker host:
 
 ```
 set NO_PROXY=192.168.99.100

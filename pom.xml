@@ -5,7 +5,7 @@
     <groupId>pz.boilerplate</groupId>
     <artifactId>em-manage-war</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Jersey Jackson</name>
+    <name>Remote Management Sample WAR</name>
     <packaging>war</packaging>
     
     <properties>

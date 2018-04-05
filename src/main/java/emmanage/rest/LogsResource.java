@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
-import java.util.List;
+import java.lang.annotation.Annotation;
+import java.net.URI;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.ws.rs.DefaultValue;
@@ -14,13 +16,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.StreamingOutput;
-import javax.ws.rs.core.UriInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -51,6 +49,20 @@ public class LogsResource {
     	List<LogInfo> retVal = files.stream().map((x) -> new LogInfo(x,uriInfo,true)).collect(Collectors.toList());
 		return retVal;
     }
+
+	@GET
+	@Path("/dummy")
+	@Produces({MediaType.TEXT_PLAIN})
+	@ApiOperation(value="Gets metadata about a log file")
+	@ApiResponses( value={
+			@ApiResponse(code=200, message = "success", response=Response.class),
+			@ApiResponse(code=404, message = "Error")})
+	public Response getDummy(@PathParam("operacion") @ApiParam("Operacion a recibir, con valores OK, KO, WAIT o con parametro vacio devuelve una de las 3") String operacion) throws IOException{
+		ResponseBuilder responseBuilder;
+		responseBuilder = Response.ok().status(Status.NO_CONTENT);
+
+    	return responseBuilder.build();
+	}
     
     @GET
     @Path("/{id:.*\\.log}")
